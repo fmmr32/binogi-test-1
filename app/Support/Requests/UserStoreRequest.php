@@ -55,10 +55,12 @@ class UserStoreRequest extends FormRequest
      */
     public function rules()
     {
+        // validation rules for nickname requirements: unique, shorter than 30 char
         return [
-            'name'     => 'required|string|max:191|min:1',
-            'email'    => 'required|email|unique:users',
+            'name' => 'required|string|max:191|min:1',
+            'email' => 'required|email|unique:users',
             'password' => 'required|string|min:8|max:191',
+            'nickname' => 'required|string|max:30|unique:users,nickname',
         ];
     }
 }

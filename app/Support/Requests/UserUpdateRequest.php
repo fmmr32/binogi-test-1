@@ -49,10 +49,12 @@ class UserUpdateRequest extends FormRequest
 
     public function rules(): array
     {
+        // validation rules for nickname requirements: unique, shorter than 30 char
         return [
-            'name'     => 'string|max:191|min:1',
+            'name' => 'string|max:191|min:1',
             'password' => 'string|min:8|max:191',
-            'email'    => [
+            'nickname' => 'required|string|max:30|unique:users,nickname',
+            'email' => [
                 'email',
                 Rule::unique('users')->ignore(request()->route('user')->id),
             ],

@@ -93,13 +93,6 @@ class UserController extends Controller
 
     public function store(UserStoreRequest $request): JsonResponse
     {
-        // validation rules for nickname requirements: unique, shorter than 30 char
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'nickname' => 'required|string|max:30|unique:users,nickname',
-            'email' => 'required|string|email|max:255|unique:users,email',
-            'password' => 'required|string|min:8|max:255',
-        ]);
 
         $user = $this->userRepository->create([
             'name' => $request->input('name'),
@@ -147,15 +140,7 @@ class UserController extends Controller
      */
 
     public function update(UserUpdateRequest $request, User $user): JsonResponse
-    { // validation rules: nickname: 30 char, unique
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'nickname' => 'required|string|max:30|unique:users,nickname,' . $user->id,
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'password' => 'sometimes|required|string|min:8|max:255',
-
-        ]);
-
+    {
         $data = [
             'name' => trim($request->input('name')),
             'nickname' => trim($request->input('nickname')),
