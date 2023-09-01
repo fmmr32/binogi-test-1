@@ -26,7 +26,6 @@ services:
             - ./:/var/www
             - ./.docker/php/:/usr/local/etc/php/conf.d/
     mysql:
-        platform: linux/x86_64 #remove this line if you are using Windows or an Intel Mac
         image: mysql:5.7.33
         container_name: mysql
         volumes:
