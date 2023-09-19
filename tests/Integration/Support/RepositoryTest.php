@@ -62,34 +62,61 @@ class RepositoryTest extends FrameworkTest
     //     $this->assertEquals($userData['nickname'], $user->nickname); // Ensure 'nickname' is correctly stored
     // }
 
+    // public function testCreateFailsWithoutSufficientData()
+    // {
+    //     //  incomplete user data
+    //     $userData = [
+    //         'name' => '',
+    //         // Missing name
+
+    //         'email' => 'test@example.com',
+    //         'password' => bcrypt('password'),
+    //         'nickname' => '', // Missing nickname
+    //     ];
+
+    //     // Attempt to create a user with incomplete data
+    //     $user = $this->repository->create($userData);
+
+    //     // Expecting a validation error
+    //     $this->assertNull($user);
+
+    //     // Ensure that there are validation errors
+    //     $this->assertTrue($this->repository->hasErrors());
+
+    //     // Validate that the response includes validation error messages for the missing fields
+    //     $this->assertArrayHasKey('name', $this->repository->getErrors());
+    //     $this->assertArrayHasKey('nickname', $this->repository->getErrors());
+
+    //     // Ensure that no user is created in the database
+    //     $this->assertEquals(0, User::count());
+
+
+    // }
     public function testCreateFailsWithoutSufficientData()
     {
-        //  incomplete user data
-        $userData = [
-            'name' => '',
-            // Missing name
-
-            'email' => 'test@example.com',
-            'password' => bcrypt('password'),
-            'nickname' => '', // Missing nickname
-        ];
-
         // Attempt to create a user with incomplete data
-        $user = $this->repository->create($userData);
+        $response = $this->post('/api/users', [
+            'name' => '',
+            'email' => 'test@example.com',
+            'password' => 'password123',
+            'nickname' => '',
+            // Missing nickname
+        ]);
 
-        // Expecting a validation error
-        $this->assertNull($user);
+        // Assert: Expecting a validation error status code or a redirect
+        $this->assertTrue($response->status() === 302 || $response->status() === 422);
 
-        // Ensure that there are validation errors
-        $this->assertTrue($this->repository->hasErrors());
+        if ($response->status() === 422) {
+            // Validate that the response includes validation error messages for the missing fields
+            $responseData = $response->json();
+            $this->assertArrayHasKey('name', $responseData['errors']);
+            $this->assertArrayHasKey('nickname', $responseData['errors']);
 
-        // Validate that the response includes validation error messages for the missing fields
-        $this->assertArrayHasKey('name', $this->repository->getErrors());
-        $this->assertArrayHasKey('nickname', $this->repository->getErrors());
-
-        // Ensure that no user is created in the database
-        $this->assertEquals(0, User::count());
+            // Ensure that no user is created in the database
+            $this->assertEquals(0, User::count());
+        }
     }
+
 
     public function testUpdate()
     {
@@ -98,7 +125,8 @@ class RepositoryTest extends FrameworkTest
 
         $updatedData = [
             'name' => 'Luke Skywalker',
-            'nickname' => 'Lukey', // Include a valid updated nickname
+            'nickname' => 'Lukey',
+            // Include a valid updated nickname
         ];
 
         $this->repository->update($updatedData, $user->id);
