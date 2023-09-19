@@ -27,7 +27,7 @@ class RepositoryTest extends FrameworkTest
         $user = $this->userFactory->create();
         $this->assertInstanceOf(User::class, $user);
     }
-    /** a hard coded way to test create user */
+    /** // a hard coded way to test create user */
     // public function testCreate()
     // {
     //     $userData = [
@@ -45,53 +45,7 @@ class RepositoryTest extends FrameworkTest
     //     $this->assertEquals($userData['nickname'], $user->nickname); // Ensure 'nickname' is correctly stored
     // }
 
-    // public function testCreateWithoutSuffientData()
-    // {
-    //     $userData = [
-    //         'name' => '',
-    //         'email' => '',
-    //         'password' => bcrypt('password'),
-    //         'nickname' => '', // Include nickname
-    //     ];
 
-    //     $user = $this->repository->create($userData);
-
-    //     $this->assertInstanceOf(User::class, $user);
-    //     $this->assertEquals($userData['name'], $user->name);
-    //     $this->assertEquals($userData['email'], $user->email);
-    //     $this->assertEquals($userData['nickname'], $user->nickname); // Ensure 'nickname' is correctly stored
-    // }
-
-    // public function testCreateFailsWithoutSufficientData()
-    // {
-    //     //  incomplete user data
-    //     $userData = [
-    //         'name' => '',
-    //         // Missing name
-
-    //         'email' => 'test@example.com',
-    //         'password' => bcrypt('password'),
-    //         'nickname' => '', // Missing nickname
-    //     ];
-
-    //     // Attempt to create a user with incomplete data
-    //     $user = $this->repository->create($userData);
-
-    //     // Expecting a validation error
-    //     $this->assertNull($user);
-
-    //     // Ensure that there are validation errors
-    //     $this->assertTrue($this->repository->hasErrors());
-
-    //     // Validate that the response includes validation error messages for the missing fields
-    //     $this->assertArrayHasKey('name', $this->repository->getErrors());
-    //     $this->assertArrayHasKey('nickname', $this->repository->getErrors());
-
-    //     // Ensure that no user is created in the database
-    //     $this->assertEquals(0, User::count());
-
-
-    // }
     public function testCreateFailsWithoutSufficientData()
     {
         // Attempt to create a user with incomplete data
