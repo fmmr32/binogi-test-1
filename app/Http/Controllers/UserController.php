@@ -101,6 +101,16 @@ class UserController extends Controller
             'password' => Hash::make($request->input('password')),
         ]);
 
+        //using get
+        //trim to reduce the risk of user type-o
+        // Update: Add Nickname and trim all given data to reduce the risk of user type-o
+        //  $user = $this->userRepository->create([
+        //     'nickname' => trim($request->get('nickname')),
+        //     'name'     => trim($request->get('name')),
+        //     'email'    => trim($request->get('email')),
+        //     'password' => Hash::make(trim($request->get('password'))),
+        // ]);
+
         return \Response::json($this->userMapper->single($user));
     }
 
@@ -147,6 +157,14 @@ class UserController extends Controller
             'email' => trim($request->input('email')),
             'password' => Hash::make(trim($request->input('password')) ?: null),
         ];
+
+        //  // Fix: Avoid overwriting existing data if not providing all parameters.
+        //  $data = [
+        //     'nickname' => trim($request->input('nickname')) ?: $user->nickname,
+        //     'name'     => trim($request->input('name')) ?: $user->name,
+        //     'email'    => trim($request->input('email')) ?: $user->email,
+        //     'password' => Hash::make(trim($request->input('password')) ?: $user->password),
+        // ];
 
         $user->fill($data)->save();
 

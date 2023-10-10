@@ -163,6 +163,7 @@
             "UserStoreRequest": {
                 "description": "Create new user",
                 "required": [
+                    "nickname",
                     "name",
                     "email",
                     "password"

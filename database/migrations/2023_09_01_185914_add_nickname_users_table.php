@@ -13,7 +13,7 @@ return new class extends Migration {
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('nickname')->unique()->nullable()->after('email');
+            $table->string('nickname', 29)->unique()->nullable()->after('email'); // 29 because char limit is <30
         });
 
     }
